@@ -1,8 +1,0 @@
-target/
-*.jar
-application.properties
-application.yml
-.idea/
-.vscode/
-*.log
-.m2/
