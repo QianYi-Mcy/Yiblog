@@ -1,4 +1,4 @@
-# 个人博客系统（SpringBoot3 + JDK21）
+# 个人博客系统（SpringBoot3 + JDK25）
 
 一个基于 Spring Boot 3 + MyBatis-Plus + Thymeleaf 的轻量级个人博客系统，采用玻璃拟态（Glassmorphism）风格，支持浅色主题下的绿/红双配色切换。
 
@@ -8,7 +8,7 @@
 
 | 分类 | 技术 |
 | --- | --- |
-| 语言 | Java 21 |
+| 语言 | Java 25 |
 | 框架 | Spring Boot 3.3.2 |
 | 持久层 | MyBatis-Plus 3.5.7 |
 | 数据库 | MySQL 8 |

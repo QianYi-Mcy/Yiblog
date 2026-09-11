@@ -36,9 +36,3 @@ public class GlobalExceptionHandler {
         return mv;
     }
 }
-        LambdaUpdateWrapper<Article> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(Article::getId, id)
-               .setSql("views = views + 1");
-        update(wrapper);
-    }
-}

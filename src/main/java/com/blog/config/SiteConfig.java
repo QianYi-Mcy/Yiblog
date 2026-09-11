@@ -21,7 +21,7 @@ public class SiteConfig {
     private String theme = "green";
 
     /** 页脚版权信息 */
-    private String copyright = "© 2026 我的博客 | Powered by SpringBoot3 + JDK21";
+    private String copyright = "© 2026 我的博客 | Powered by SpringBoot3 + JDK25";
 
     /** 站点访问地址（用于启动横幅展示，可在配置中覆盖） */
     private String baseUrl = "http://localhost:8080";

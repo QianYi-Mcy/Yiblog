@@ -12,7 +12,7 @@ public class TestController {
 
     @GetMapping("/hello")
     public Result<String> hello() {
-        return Result.ok("服务正常", "Hello SpringBoot3 + JDK21");
+        return Result.ok("服务正常", "Hello SpringBoot3 + JDK25");
     }
 }
 
