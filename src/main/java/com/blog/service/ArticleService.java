@@ -12,4 +12,8 @@ public interface ArticleService extends IService<Article> {
 
     // 根据ID获取文章详情
     Article getArticleById(Integer id);
+
+    // 浏览量 +1（SQL 原子自增）
+    void increaseViews(Integer id);
 }
+

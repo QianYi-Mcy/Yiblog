@@ -1,20 +1,18 @@
 package com.blog.controller;
 
+import com.blog.common.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * 健康检查 / 状态接口，用于部署后快速验证服务是否正常。
+ */
 @RestController
 public class TestController {
 
     @GetMapping("/hello")
-    public Map<String, Object> hello() {
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", 200);
-        result.put("message", "博客系统启动成功！");
-        result.put("data", "Hello SpringBoot3 + JDK21");
-        return result;
+    public Result<String> hello() {
+        return Result.ok("服务正常", "Hello SpringBoot3 + JDK21");
     }
 }
+

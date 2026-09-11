@@ -116,11 +116,28 @@
         }
         .delete-link {
             color: #e74c3c;
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .delete-form {
+            display: inline;
         }
         .empty-tip {
             text-align: center;
             padding: 60px;
             color: var(--text-mute);
+        }
+        .flash-msg {
+            margin-bottom: 16px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: rgba(var(--accent-rgb), 0.10);
+            border: 1px solid var(--accent-soft);
+            color: var(--accent);
+            font-size: 14px;
         }
     </style>
 </head>
@@ -143,6 +160,8 @@
             <h2>文章管理</h2>
             <a href="/admin/article/add" class="btn-accent">+ 写新文章</a>
         </div>
+
+        <div class="flash-msg" th:if="${message}" th:text="${message}">提示</div>
 
         <div class="article-table">
             <table>
@@ -169,7 +188,10 @@
                         <td class="action-links">
                             <a th:href="@{'/article/' + ${article.id}}" target="_blank" class="edit-link">查看</a>
                             <a th:href="@{'/admin/article/edit/' + ${article.id}}" class="edit-link">编辑</a>
-                            <a th:href="@{'/admin/article/delete/' + ${article.id}}" class="delete-link" onclick="return confirm('确定删除这篇文章吗？')">删除</a>
+                            <form th:action="@{'/admin/article/delete/' + ${article.id}}" method="post" class="delete-form"
+                                  onsubmit="return confirm('确定删除这篇文章吗？')">
+                                <button type="submit" class="delete-link">删除</button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>

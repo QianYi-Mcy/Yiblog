@@ -21,6 +21,7 @@
     </div>
 
     <div class="container">
+        <div class="flash-msg" th:if="${message}" th:text="${message}">提示</div>
         <div class="article-card" th:each="article : ${articles}">
             <h2>
                 <a th:href="@{'/article/' + ${article.id}}" th:text="${article.title}">文章标题</a>

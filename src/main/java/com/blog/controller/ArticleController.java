@@ -1,117 +1,87 @@
 package com.blog.controller;
 
+import com.blog.common.Result;
 import com.blog.entity.Article;
 import com.blog.entity.User;
 import com.blog.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/article")
 public class ArticleController {
 
-    @Autowired
-    private ArticleService articleService;
+    private final ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     // 获取文章列表
     @GetMapping("/list")
-    public Map<String, Object> list() {
-        Map<String, Object> result = new HashMap<>();
-        List<Article> articles = articleService.getPublishedArticles();
-        result.put("code", 200);
-        result.put("message", "获取成功");
-        result.put("data", articles);
-        return result;
+    public Result<List<Article>> list() {
+        return Result.ok(articleService.getPublishedArticles());
     }
 
     // 获取文章详情
     @GetMapping("/{id}")
-    public Map<String, Object> detail(@PathVariable Integer id) {
-        Map<String, Object> result = new HashMap<>();
+    public Result<Article> detail(@PathVariable Integer id) {
         Article article = articleService.getArticleById(id);
-        if (article != null) {
-            // 浏览量+1
-            article.setViews(article.getViews() + 1);
-            articleService.updateById(article);
-            result.put("code", 200);
-            result.put("message", "获取成功");
-            result.put("data", article);
-        } else {
-            result.put("code", 404);
-            result.put("message", "文章不存在");
+        if (article == null) {
+            return Result.fail(404, "文章不存在");
         }
-        return result;
+        articleService.increaseViews(id);
+        article.setViews((article.getViews() == null ? 0 : article.getViews()) + 1);
+        return Result.ok(article);
     }
-
     // 新增文章
     @PostMapping("/add")
-    public Map<String, Object> add(@RequestBody Article article, HttpSession session) {
-        Map<String, Object> result = new HashMap<>();
-        User loginUser = (User) session.getAttribute("loginUser");
+    public Result<Void> add(@RequestBody Article article, HttpSession session) {
+        User loginUser = currentUser(session);
         if (loginUser == null) {
-            result.put("code", 401);
-            result.put("message", "请先登录");
-            return result;
+            return Result.fail(401, "请先登录");
         }
+        article.setId(null);
         article.setUserId(loginUser.getId());
         if (article.getStatus() == null) {
             article.setStatus(1);
         }
-        boolean success = articleService.save(article);
-        if (success) {
-            result.put("code", 200);
-            result.put("message", "发布成功");
-        } else {
-            result.put("code", 500);
-            result.put("message", "发布失败");
-        }
-        return result;
+        article.setViews(0);
+        article.setCreateTime(LocalDateTime.now());
+        article.setUpdateTime(LocalDateTime.now());
+        return articleService.save(article)
+                ? Result.success("发布成功")
+                : Result.fail("发布失败");
     }
-
     // 更新文章
     @PostMapping("/update")
-    public Map<String, Object> update(@RequestBody Article article, HttpSession session) {
-        Map<String, Object> result = new HashMap<>();
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            result.put("code", 401);
-            result.put("message", "请先登录");
-            return result;
+    public Result<Void> update(@RequestBody Article article, HttpSession session) {
+        if (currentUser(session) == null) {
+            return Result.fail(401, "请先登录");
         }
-        boolean success = articleService.updateById(article);
-        if (success) {
-            result.put("code", 200);
-            result.put("message", "更新成功");
-        } else {
-            result.put("code", 500);
-            result.put("message", "更新失败");
+        if (article.getId() == null) {
+            return Result.fail(400, "缺少文章ID");
         }
-        return result;
+        article.setUpdateTime(LocalDateTime.now());
+        return articleService.updateById(article)
+                ? Result.success("更新成功")
+                : Result.fail("更新失败");
+    }
+    // 删除文章
+    @PostMapping("/delete/{id}")
+    public Result<Void> delete(@PathVariable Integer id, HttpSession session) {
+        if (currentUser(session) == null) {
+            return Result.fail(401, "请先登录");
+        }
+        return articleService.removeById(id)
+                ? Result.success("删除成功")
+                : Result.fail("删除失败");
     }
 
-    // 删除文章
-    @GetMapping("/delete/{id}")
-    public Map<String, Object> delete(@PathVariable Integer id, HttpSession session) {
-        Map<String, Object> result = new HashMap<>();
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            result.put("code", 401);
-            result.put("message", "请先登录");
-            return result;
-        }
-        boolean success = articleService.removeById(id);
-        if (success) {
-            result.put("code", 200);
-            result.put("message", "删除成功");
-        } else {
-            result.put("code", 500);
-            result.put("message", "删除失败");
-        }
-        return result;
+    // 提取当前登录用户
+    private User currentUser(HttpSession session) {
+        return (User) session.getAttribute("loginUser");
     }
 }
+

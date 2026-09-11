@@ -23,6 +23,9 @@ public class SiteConfig {
     /** 页脚版权信息 */
     private String copyright = "© 2026 我的博客 | Powered by SpringBoot3 + JDK21";
 
+    /** 站点访问地址（用于启动横幅展示，可在配置中覆盖） */
+    private String baseUrl = "http://localhost:8080";
+
     public String getTitle() {
         return title;
     }
@@ -54,4 +57,13 @@ public class SiteConfig {
     public void setCopyright(String copyright) {
         this.copyright = copyright;
     }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 }
+

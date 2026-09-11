@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:attr="data-default-theme=${site} != null ? ${site.theme} : 'green'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出错了</title>
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
+    <script th:src="@{/js/theme.js}"></script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-box {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 56px 48px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.68);
+            backdrop-filter: blur(22px) saturate(150%);
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 480px;
+        }
+        .error-box .code {
+            font-size: 64px;
+            font-weight: 700;
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .error-box h1 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin: 10px 0 16px;
+        }
+        .error-box p {
+            color: var(--text-sub);
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="切换主题配色">
+        <span class="dot"></span>
+        <span id="themeLabel">绿色主题</span>
+    </button>
+
+    <div class="error-box">
+        <div class="code">500</div>
+        <h1>服务器开小差了</h1>
+        <p th:text="${message} != null ? ${message} : '请稍后再试~'">请稍后再试~</p>
+        <a href="/" class="btn-accent">返回首页</a>
+    </div>
+</body>
+</html>
