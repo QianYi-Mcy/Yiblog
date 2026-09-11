@@ -1,31 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:attr="data-default-theme=${site} != null ? ${site.theme} : 'green'">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>后台管理 - 文章管理</title>
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
+    <script th:src="@{/js/theme.js}"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #f0f2f5;
-            color: #333;
-        }
         .header {
-            background: white;
-            padding: 16px 30px;
+            position: relative;
+            z-index: 1;
+            margin: 20px auto 0;
+            max-width: 1200px;
+            padding: 18px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
         }
         .header h1 {
             font-size: 20px;
-            color: #333;
+            color: var(--text-main);
+        }
+        .header h1 .accent {
+            color: var(--accent);
         }
         .header .user-info {
             display: flex;
@@ -33,15 +37,17 @@
             gap: 16px;
         }
         .header .user-info span {
-            color: #666;
+            color: var(--text-sub);
         }
         .header .user-info a {
-            color: #667eea;
+            color: var(--accent);
             text-decoration: none;
         }
         .container {
+            position: relative;
+            z-index: 1;
             max-width: 1200px;
-            margin: 30px auto;
+            margin: 24px auto;
             padding: 0 20px;
         }
         .toolbar {
@@ -52,20 +58,16 @@
         }
         .toolbar h2 {
             font-size: 18px;
-        }
-        .add-btn {
-            padding: 10px 24px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
+            color: var(--text-main);
         }
         .article-table {
-            background: white;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.66);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
         }
         table {
             width: 100%;
@@ -74,16 +76,23 @@
         th, td {
             padding: 14px 16px;
             text-align: left;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         th {
-            background: #fafafa;
+            background: rgba(var(--accent-rgb), 0.06);
             font-weight: 600;
-            color: #666;
+            color: var(--text-sub);
             font-size: 14px;
         }
         td {
             font-size: 14px;
+            color: var(--text-main);
+        }
+        tbody tr {
+            transition: background 0.2s;
+        }
+        tbody tr:hover {
+            background: rgba(var(--accent-rgb), 0.05);
         }
         .title-cell {
             max-width: 300px;
@@ -92,7 +101,7 @@
             white-space: nowrap;
         }
         .status-published {
-            color: #52c41a;
+            color: #16a34a;
         }
         .status-draft {
             color: #faad14;
@@ -103,7 +112,7 @@
             font-size: 13px;
         }
         .edit-link {
-            color: #667eea;
+            color: var(--accent);
         }
         .delete-link {
             color: #e74c3c;
@@ -111,13 +120,18 @@
         .empty-tip {
             text-align: center;
             padding: 60px;
-            color: #999;
+            color: var(--text-mute);
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle" title="切换主题配色">
+        <span class="dot"></span>
+        <span id="themeLabel">绿色主题</span>
+    </button>
+
     <div class="header">
-        <h1>博客后台管理系统</h1>
+        <h1>博客后台管理<span class="accent">·</span>探索，永无止境</h1>
         <div class="user-info">
             <span>欢迎，<span th:text="${user.nickname}">管理员</span></span>
             <a href="/logout">退出登录</a>
@@ -127,7 +141,7 @@
     <div class="container">
         <div class="toolbar">
             <h2>文章管理</h2>
-            <a href="/admin/article/add" class="add-btn">+ 写新文章</a>
+            <a href="/admin/article/add" class="btn-accent">+ 写新文章</a>
         </div>
 
         <div class="article-table">
@@ -162,4 +176,8 @@
             </table>
             <div class="empty-tip" th:if="${#lists.isEmpty(articles)}">
                 暂无文章，点击右上角"写新文章"开始创作吧！
-     
+            </div>
+        </div>
+    </div>
+</body>
+</html>

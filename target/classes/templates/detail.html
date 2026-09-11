@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:attr="data-default-theme=${site} != null ? ${site.theme} : 'green'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${article.title}">文章详情</title>
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
+    <script th:src="@{/js/theme.js}"></script>
+    <style>
+        .topbar {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 24px auto 0;
+            padding: 0 20px;
+        }
+        .topbar a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.25s;
+        }
+        .topbar a:hover {
+            color: var(--accent);
+        }
+        .container {
+            margin-top: 16px;
+        }
+        .article-detail {
+            background: rgba(255, 255, 255, 0.68);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 44px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+        }
+        .article-detail h1 {
+            font-size: 30px;
+            margin-bottom: 18px;
+            color: var(--text-main);
+        }
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--text-mute);
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--accent-soft);
+        }
+        .article-content {
+            line-height: 1.9;
+            font-size: 16px;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 16px;
+        }
+        .back-btn {
+            margin-top: 34px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="切换主题配色">
+        <span class="dot"></span>
+        <span id="themeLabel">绿色主题</span>
+    </button>
+    <div class="topbar">
+        <a href="/">← 返回首页</a>
+    </div>
+
+    <div class="container">
+        <div class="article-detail">
+            <h1 th:text="${article.title}">文章标题</h1>
+            <div class="article-meta">
+                <span>👁 浏览 <span th:text="${article.views}">0</span></span>
+                <span>📅 <span th:text="${#temporals.format(article.createTime, 'yyyy-MM-dd HH:mm')}">2026-01-01 00:00</span></span>
+            </div>
+            <div class="article-content" th:utext="${article.content}">
+                文章内容
+            </div>
+            <a href="/" class="btn-accent back-btn">返回首页</a>
+        </div>
+    </div>
+</body>
+</html>
+

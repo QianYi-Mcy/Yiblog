@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import com.blog.config.SiteConfig;
 import com.blog.entity.Article;
 import com.blog.entity.User;
 import com.blog.service.ArticleService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,6 +21,15 @@ public class AdminController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private SiteConfig siteConfig;
+
+    // 所有后台页面共享站点配置
+    @ModelAttribute("site")
+    public SiteConfig site() {
+        return siteConfig;
+    }
 
     // 后台首页（文章管理）
     @GetMapping
@@ -66,3 +77,4 @@ public class AdminController {
         return "redirect:/admin";
     }
 }
+

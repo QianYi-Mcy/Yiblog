@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:attr="data-default-theme=${site} != null ? ${site.theme} : 'green'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录</title>
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
+    <script th:src="@{/js/theme.js}"></script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.68);
+            backdrop-filter: blur(22px) saturate(150%);
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 44px;
+            width: 380px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        .login-box h1 {
+            text-align: center;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            font-size: 24px;
+        }
+        .login-box .subtitle {
+            text-align: center;
+            color: var(--text-mute);
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+        .login-box .subtitle .accent {
+            color: var(--accent);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.7);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .error-msg {
+            color: var(--accent);
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-grad);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+        .login-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.25s;
+        }
+        .back-link a:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="切换主题配色">
+        <span class="dot"></span>
+        <span id="themeLabel">绿色主题</span>
+    </button>
+
+    <div class="login-box">
+        <h1>管理员登录</h1>
+        <p class="subtitle">探索<span class="accent">，</span>永无止境</p>
+        <div class="error-msg" th:if="${error}" th:text="${error}"></div>
+        <form method="post" action="/login">
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" name="username" required placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" name="password" required placeholder="请输入密码">
+            </div>
+            <button type="submit" class="login-btn">登 录</button>
+        </form>
+        <div class="back-link">
+            <a href="/">← 返回博客首页</a>
+        </div>
+    </div>
+</body>
+</html>

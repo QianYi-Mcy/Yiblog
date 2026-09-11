@@ -1,11 +1,13 @@
 package com.blog.controller;
 
+import com.blog.config.SiteConfig;
 import com.blog.entity.User;
 import com.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,11 +19,20 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SiteConfig siteConfig;
+
+    // 登录页面共享站点配置
+    @ModelAttribute("site")
+    public SiteConfig site() {
+        return siteConfig;
+    }
+
     // 登录页面
     @GetMapping("/login")
     public String loginPage() {
-        return "login";
-    }
+            return "login";
+        }
 
     // 登录提交
     @PostMapping("/login")
@@ -36,8 +47,8 @@ public class LoginController {
         } else {
             model.addAttribute("error", "用户名或密码错误");
             return "login";
-        }
     }
+}
 
     // 退出登录
     @GetMapping("/logout")
@@ -46,3 +57,4 @@ public class LoginController {
         return "redirect:/login";
     }
 }
+
