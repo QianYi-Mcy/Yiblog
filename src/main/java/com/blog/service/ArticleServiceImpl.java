@@ -1,28 +1,8 @@
-package com.blog.config;
+package com.blog.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+// 说明：本文件已废弃（不再定义任何 Bean）。
+// 文章业务实现统一放在 com.blog.service.impl.ArticleServiceImpl。
+// 此前同类名的 @Service 类放在本包下会与 impl 包中的实现产生
+// ConflictingBeanDefinitionException（两个 articleServiceImpl Bean），
+// 故保留此占位文件以说明原由，可安全删除。
 
-import jakarta.servlet.http.HttpServletRequest;
-
-/**
- * 全局异常处理：统一捕获未处理的异常，避免把堆栈直接抛给用户。
- * <p>注：类为该文件内唯一的包级私有类，文件名与类名无需一致。</p>
- */
-@ControllerAdvice
-class GlobalExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleException(HttpServletRequest request, Exception ex) {
-        log.error("请求处理异常: {} {}", request.getMethod(), request.getRequestURI(), ex);
-        ModelAndView mv = new ModelAndView("error");
-        mv.addObject("message", "服务器开小差了，请稍后再试~");
-        mv.addObject("path", request.getRequestURI());
-        return mv;
-    }
-}

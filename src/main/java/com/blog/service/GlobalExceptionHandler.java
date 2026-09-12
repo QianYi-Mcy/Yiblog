@@ -1,27 +1,7 @@
-package com.blog.config;
+package com.blog.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+// 说明：本文件已废弃（不再定义任何 Bean）。
+// 全局异常处理统一放在 com.blog.config.GlobalExceptionHandler，
+// 那里会对 /api/** 返回 JSON、对页面请求返回错误页。
+// 该文件可安全删除。
 
-import jakarta.servlet.http.HttpServletRequest;
-
-/**
- * 全局异常处理：统一捕获未处理的异常，避免把堆栈直接抛给用户。
- */
-@ControllerAdvice
-public class GlobalExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleException(HttpServletRequest request, Exception ex) {
-        log.error("请求处理异常: {} {}", request.getMethod(), request.getRequestURI(), ex);
-        ModelAndView mv = new ModelAndView("error");
-        mv.addObject("message", "服务器开小差了，请稍后再试~");
-        mv.addObject("path", request.getRequestURI());
-        return mv;
-    }
-}
