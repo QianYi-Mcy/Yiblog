@@ -1,33 +1,8 @@
 package com.blog.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.blog.entity.Article;
-import com.blog.mapper.ArticleMapper;
-import org.springframework.stereotype.Service;
+// 说明：本文件已废弃（不再定义任何 Bean）。
+// 文章业务实现统一放在 com.blog.service.impl.ArticleServiceImpl。
+// 此前同类名的 @Service 类放在本包下会与 impl 包中的实现产生
+// ConflictingBeanDefinitionException（两个 articleServiceImpl Bean），
+// 故保留此占位文件以说明原由，可安全删除。
 
-import java.util.List;
-
-@Service
-public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
-
-    @Override
-    public List<Article> getPublishedArticles() {
-        return list(new LambdaQueryWrapper<Article>()
-                .eq(Article::getStatus, 1)
-                .orderByDesc(Article::getCreateTime));
-    }
-
-    @Override
-    public Article getArticleById(Integer id) {
-        return getById(id);
-    }
-
-    @Override
-    public void increaseViews(Integer id) {
-        update(new LambdaUpdateWrapper<Article>()
-                .eq(Article::getId, id)
-                .setSql("views = views + 1"));
-    }
-}
